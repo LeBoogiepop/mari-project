@@ -3,10 +3,13 @@
 import Header from "@/components/header"
 import LanguageSelector from "@/components/language-selector"
 import DayCounter from "@/components/day-counter"
+import MeetingCountdown from "@/components/meeting-countdown"
+import LoveClicker from "@/components/love-clicker"
+import GoalsTracker from "@/components/goals-tracker"
+import ComplimentGenerator from "@/components/compliment-generator"
 import Image from "next/image"
 import { useLanguage } from "@/contexts/language-context"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Music2 } from "lucide-react"
+import DailyWidgets from "@/components/daily-widgets"
 
 export default function SecondaryContentClient() {
   const { t } = useLanguage()
@@ -28,6 +31,7 @@ export default function SecondaryContentClient() {
                 width={120}
                 height={120}
                 className="transform rotate-12 opacity-70"
+                priority // Ajout de priority pour cette image above-the-fold
               />
             </div>
           </div>
@@ -35,23 +39,21 @@ export default function SecondaryContentClient() {
           <DayCounter />
         </div>
 
-        {/* Section Notre Chanson (la seule qui reste) */}
-        <Card className="shadow-xl bg-white">
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold text-mari-brown flex items-center">
-              <Music2 className="w-8 h-8 mr-3 text-heart-red" />
-              {t("song.title")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600 mb-4">{t("song.description")}</p>
-            <audio controls className="w-full rounded-md shadow-sm">
-              <source src="/our-song.mp3" type="audio/mpeg" />
-              {t("song.fallback")}
-            </audio>
-          </CardContent>
-        </Card>
+        {/* Compte à rebours pour la prochaine rencontre */}
+        <MeetingCountdown />
+
+        {/* Compteur de Clics "Je t'aime" */}
+        <LoveClicker />
+
+        {/* Daily Widgets - Question et Challenge */}
+        <DailyWidgets />
+
+        {/* Goals Tracker */}
+        <GoalsTracker />
       </main>
+
+      {/* Compliment Generator - Position fixe en bas à droite */}
+      <ComplimentGenerator />
     </div>
   )
 }

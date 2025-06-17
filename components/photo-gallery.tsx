@@ -3,12 +3,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-
-interface Photo {
-  src: string
-  alt: string
-  caption: string
-}
+import type { Photo } from "@/types/app-types"
 
 const photos: Photo[] = [
   { src: "/placeholder.svg?height=400&width=400", alt: "Photo 1", caption: "nous 2 💌" },
@@ -49,6 +44,7 @@ export default function PhotoGallery() {
               width={400}
               height={400}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading={index < 2 ? "eager" : "lazy"} // Lazy loading pour toutes les images sauf les 2 premières
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <p className="text-off-white text-xl font-semibold">{photo.caption}</p>

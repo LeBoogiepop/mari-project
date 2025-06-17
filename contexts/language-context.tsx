@@ -1,8 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
-
-type Language = "fr" | "en" | "ru"
+import type { Language, Translations } from "@/types/app-types"
 
 interface LanguageContextType {
   language: Language
@@ -10,7 +9,7 @@ interface LanguageContextType {
   t: (key: string) => string
 }
 
-const translations = {
+const translations: Translations = {
   fr: {
     "mari.title": "Mari the queen",
     "mari.subtitle": "for the love of my life",
@@ -18,9 +17,15 @@ const translations = {
     "coming.title": "Come back later le sang",
     "coming.subtitle": "Возвращайся позже, может, тебя тут ждёт сюрприз…",
     "coming.button": "you : 😾",
-    "song.title": "Notre Chanson",
-    "song.description": "La mélodie de nos cœurs...",
-    "song.fallback": "Ton navigateur ne supporte pas l'élément audio.",
+    "time.paris": "Heure de Paris",
+    "time.busan": "Heure de Busan",
+    "meeting.title": "PROCHAINE RENCONTRE",
+    "meeting.date": "20 Juillet 2025",
+    "meeting.days": "JOURS",
+    "meeting.hours": "HEURES",
+    "meeting.minutes": "MIN",
+    "meeting.seconds": "SEC",
+    "goals.title": "Goals Tracker",
   },
   en: {
     "mari.title": "Mari the queen",
@@ -29,9 +34,15 @@ const translations = {
     "coming.title": "Come back later bro",
     "coming.subtitle": "Come back later, maybe there's a surprise waiting for you…",
     "coming.button": "you : 😾",
-    "song.title": "Our Song",
-    "song.description": "The melody of our hearts...",
-    "song.fallback": "Your browser does not support the audio element.",
+    "time.paris": "Paris Time",
+    "time.busan": "Busan Time",
+    "meeting.title": "NEXT MEETING",
+    "meeting.date": "July 20th, 2025",
+    "meeting.days": "DAYS",
+    "meeting.hours": "HOURS",
+    "meeting.minutes": "MIN",
+    "meeting.seconds": "SEC",
+    "goals.title": "Goals Tracker",
   },
   ru: {
     "mari.title": "Мари королева",
@@ -40,21 +51,26 @@ const translations = {
     "coming.title": "Возвращайся позже братан",
     "coming.subtitle": "Возвращайся позже, может, тебя тут ждёт сюрприз…",
     "coming.button": "ты : 😾",
-    "song.title": "Наша Песня",
-    "song.description": "Мелодия наших сердец...",
-    "song.fallback": "Ваш браузер не поддерживает аудио элемент.",
+    "time.paris": "Время в Париже",
+    "time.busan": "Время в Пусане",
+    "meeting.title": "СЛЕДУЮЩАЯ ВСТРЕЧА",
+    "meeting.date": "20 июля 2025",
+    "meeting.days": "ДНИ",
+    "meeting.hours": "ЧАСЫ",
+    "meeting.minutes": "МИН",
+    "meeting.seconds": "СЕК",
+    "goals.title": "Трекер Целей",
   },
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("fr") // Default to French
+  const [language, setLanguage] = useState<Language>("en") // Changé de "fr" à "en" pour l'anglais par défaut
 
   // La fonction 't' simple et efficace
   const t = (key: string): string => {
     const langTranslations = translations[language]
-    // @ts-ignore
     return langTranslations[key] || key
   }
 

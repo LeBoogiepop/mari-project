@@ -12,9 +12,26 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "For Mari 💌",
-  description: "A special website for Mari, from Maxime.",
-    generator: 'v0.dev'
+  metadataBase: new URL('https://votre-site-mari.vercel.app'), // Ajoutez cette ligne avec l'URL de votre site
+  title: "Pour Mari 💌 | Une lettre d'amour digitale",
+  description:
+    "Un site personnel créé avec amour par Maxime pour Mari, célébrant notre relation et nos moments précieux.",
+  keywords: ["amour", "Mari", "Maxime", "lettre d'amour", "relation", "couple"],
+  authors: [{ name: "Maxime" }],
+  openGraph: {
+    title: "Pour Mari 💌 | Une lettre d'amour digitale",
+    description: "Un site personnel créé avec amour par Maxime pour Mari",
+    images: [
+      {
+        url: "/placeholder.svg?height=600&width=1200",
+        width: 1200,
+        height: 600,
+        alt: "Mari et Maxime",
+      },
+    ],
+    type: "website",
+  },
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({

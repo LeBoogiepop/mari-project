@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useLanguage } from "@/contexts/language-context"
+import DayNightGlobe from "./day-night-globe"
 
 interface TimeLeft {
   months: number
@@ -19,10 +20,12 @@ export default function DayCounter() {
     minutes: 0,
     seconds: 0,
   })
+  const [parisTime, setParisTime] = useState("")
+  const [busanTime, setBusanTime] = useState("")
   const { t, language } = useLanguage()
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
+    const calculateAndSetTimes = () => {
       const startDate = new Date("2025-01-26") // 26 janvier 2025
       const now = new Date()
       const difference = now.getTime() - startDate.getTime()
@@ -36,13 +39,27 @@ export default function DayCounter() {
 
         setTimeLeft({ months, days, hours, minutes, seconds })
       }
+
+      // Mettre à jour les heures de Paris et Busan
+      const options: Intl.DateTimeFormatOptions = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false, // Format 24h
+      }
+
+      setParisTime(
+        now.toLocaleTimeString(language === "fr" ? "fr-FR" : "en-US", { ...options, timeZone: "Europe/Paris" }),
+      )
+      setBusanTime(
+        now.toLocaleTimeString(language === "fr" ? "fr-FR" : "en-US", { ...options, timeZone: "Asia/Seoul" }),
+      )
     }
 
-    calculateTimeLeft()
-    const timer = setInterval(calculateTimeLeft, 1000)
+    calculateAndSetTimes() // Appel initial
+    const timer = setInterval(calculateAndSetTimes, 1000) // Mise à jour chaque seconde
 
     return () => clearInterval(timer)
-  }, [])
+  }, [language]) // Dépendance à 'language' pour que les formats d'heure se mettent à jour
 
   const formatTimeString = () => {
     const { months, days, hours, minutes, seconds } = timeLeft
@@ -56,7 +73,22 @@ export default function DayCounter() {
     }
   }
 
-  const text = t("mari.days").replace("***", formatTimeString())
+  const daysText = t("mari.days").replace("***", formatTimeString())
 
-  return <p className="text-xl md:text-2xl text-gray-500 font-medium mt-4 font-mono">{text}</p>
+  return (
+    <div className="flex flex-col items-center w-full">
+      <p className="text-xl md:text-2xl text-gray-500 font-medium mt-4 font-mono">{daysText}</p>
+      <div className="mt-2 text-lg md:text-xl text-gray-600 font-mono space-y-1">
+        <p>
+          {t("time.paris")}: {parisTime}
+        </p>
+        <p>
+          {t("time.busan")}: {busanTime}
+        </p>
+      </div>
+
+      {/* Globe Widget - Prend toute la largeur */}
+      <DayNightGlobe />
+    </div>
+  )
 }
